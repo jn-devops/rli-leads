@@ -45,7 +45,8 @@ class LeadResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -66,6 +67,7 @@ class LeadResource extends Resource
         return [
             'index' => Pages\ListLeads::route('/'),
             'create' => Pages\CreateLead::route('/create'),
+            'view' => Pages\View::route('/{record}'),
             'edit' => Pages\EditLead::route('/{record}/edit'),
         ];
     }
@@ -76,6 +78,8 @@ class LeadResource extends Resource
             ->schema([
                 TextEntry::make('name'),
                 TextEntry::make('address'),
+                TextEntry::make('birthdate'),
+                TextEntry::make('mobile'),
             ]);
     }
 }
