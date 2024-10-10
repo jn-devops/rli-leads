@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\ImageEntry;
 
 class LeadResource extends Resource
 {
@@ -80,6 +81,16 @@ class LeadResource extends Resource
                 TextEntry::make('address'),
                 TextEntry::make('birthdate'),
                 TextEntry::make('mobile'),
+                TextEntry::make('email'),
+                TextEntry::make('location'),
+                TextEntry::make('identifier'),
+                TextEntry::make('code'),
+                TextEntry::make('choice'),
+                TextEntry::make('answer'),
+                TextEntry::make('id_type'),
+                TextEntry::make('id_number'),
+                ImageEntry::make('selfie_image_url'),
+                ImageEntry::make('id_image_url'),
             ]);
     }
 }
