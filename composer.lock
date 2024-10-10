@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4603229d0b4bdd8c44e3c6a16246d696",
+    "content-hash": "9ce96a5b5f936ee737ece0885090cd1b",
     "packages": [
         {
             "name": "amphp/amp",
@@ -2075,6 +2075,60 @@
             "time": "2023-10-06T06:47:41+00:00"
         },
         {
+            "name": "eloquent/enumeration",
+            "version": "6.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eloquent/enumeration.git",
+                "reference": "15a1959683ae4fea75e19ff09d72a344ece3c6a4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eloquent/enumeration/zipball/15a1959683ae4fea75e19ff09d72a344ece3c6a4",
+                "reference": "15a1959683ae4fea75e19ff09d72a344ece3c6a4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Eloquent\\Enumeration\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Erin Millard",
+                    "email": "ezzatron@gmail.com",
+                    "homepage": "http://ezzatron.com/"
+                }
+            ],
+            "description": "An enumeration implementation for PHP.",
+            "homepage": "https://github.com/eloquent/enumeration",
+            "keywords": [
+                "class",
+                "enum",
+                "enumeration",
+                "multiton",
+                "set",
+                "type"
+            ],
+            "support": {
+                "issues": "https://github.com/eloquent/enumeration/issues",
+                "source": "https://github.com/eloquent/enumeration/tree/master"
+            },
+            "abandoned": true,
+            "time": "2018-11-22T02:45:56+00:00"
+        },
+        {
             "name": "filament/actions",
             "version": "v3.2.117",
             "source": {
@@ -4046,6 +4100,203 @@
                 "source": "https://github.com/laravel/tinker/tree/v2.10.0"
             },
             "time": "2024-09-23T13:32:56+00:00"
+        },
+        {
+            "name": "lbhurtado/common",
+            "version": "v2.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lbhurtado/common.git",
+                "reference": "74142b71f15b6e6b0f11c673df5e18c77ce0a7f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lbhurtado/common/zipball/74142b71f15b6e6b0f11c673df5e18c77ce0a7f8",
+                "reference": "74142b71f15b6e6b0f11c673df5e18c77ce0a7f8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^8.0||^9.0|^10.0|^11.0",
+                "php": "~7.1||^8.0.1",
+                "propaganistas/laravel-phone": "^4.2|^5.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.4",
+                "phpunit/phpunit": "^9.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LBHurtado\\Common\\CommonServiceProvider"
+                    ],
+                    "aliases": {
+                        "Common": "LBHurtado\\Common\\CommonFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Helpers/Utils.php"
+                ],
+                "psr-4": {
+                    "LBHurtado\\Common\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lester Hurtado",
+                    "email": "lester@hurtado.ph",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is a utility package for lbhurtado/{missive, sms, tactician, engagespark}.",
+            "homepage": "https://github.com/lbhurtado/common",
+            "keywords": [
+                "common",
+                "lbhurtado"
+            ],
+            "support": {
+                "issues": "https://github.com/lbhurtado/common/issues",
+                "source": "https://github.com/lbhurtado/common/tree/v2.3.2"
+            },
+            "time": "2024-04-04T03:04:53+00:00"
+        },
+        {
+            "name": "lbhurtado/engagespark",
+            "version": "v3.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lbhurtado/engagespark.git",
+                "reference": "594a278c79a56b5bb30c2048857f50b348f4254b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lbhurtado/engagespark/zipball/594a278c79a56b5bb30c2048857f50b348f4254b",
+                "reference": "594a278c79a56b5bb30c2048857f50b348f4254b",
+                "shasum": ""
+            },
+            "require": {
+                "eloquent/enumeration": "^6.0",
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^7.0.1",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "lbhurtado/common": "^2.2.0",
+                "php": "~7.1||^8.0.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.4",
+                "phpunit/phpunit": "^9.3.3"
+            },
+            "suggest": {
+                "lbhurtado/missive": "Add SMS domain to a Laravel project - route, models, migrations, jobs, notifications, etc."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LBHurtado\\EngageSpark\\EngageSparkServiceProvider"
+                    ],
+                    "aliases": {
+                        "EngageSpark": "LBHurtado\\EngageSpark\\EngageSparkFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LBHurtado\\EngageSpark\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lester Hurtado",
+                    "email": "lester@hurtado.ph",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This package makes it easy to send SMS notifications and topups via engageSPARK with Laravel.",
+            "homepage": "https://github.com/lbhurtado/engagespark",
+            "keywords": [
+                "engagespark",
+                "lbhurtado",
+                "sms"
+            ],
+            "support": {
+                "issues": "https://github.com/lbhurtado/engagespark/issues",
+                "source": "https://github.com/lbhurtado/engagespark/tree/v3.7"
+            },
+            "time": "2024-04-04T03:11:55+00:00"
+        },
+        {
+            "name": "lbhurtado/sms",
+            "version": "v2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lbhurtado/sms.git",
+                "reference": "227920f8bcdac19262ceb73e32107f0c20fda548"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lbhurtado/sms/zipball/227920f8bcdac19262ceb73e32107f0c20fda548",
+                "reference": "227920f8bcdac19262ceb73e32107f0c20fda548",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^8.0||^9.0|^10.0|^11.0",
+                "lbhurtado/common": "^2.2.0",
+                "lbhurtado/engagespark": "^3.2",
+                "php": "~7.1||^8.0.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.4",
+                "phpunit/phpunit": "^9.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LBHurtado\\SMS\\SMSServiceProvider"
+                    ],
+                    "aliases": {
+                        "SMS": "LBHurtado\\SMS\\SMSFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LBHurtado\\SMS\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lester Hurtado",
+                    "email": "lester@hurtado.ph",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Driver-based SMS component in Laravel inspired by the tutorial of Orobo Lucky",
+            "homepage": "https://github.com/lbhurtado/sms",
+            "keywords": [
+                "lbhurtado",
+                "sms"
+            ],
+            "support": {
+                "issues": "https://github.com/lbhurtado/sms/issues",
+                "source": "https://github.com/lbhurtado/sms/tree/v2.3.1"
+            },
+            "time": "2024-04-04T03:16:06+00:00"
         },
         {
             "name": "league/commonmark",
@@ -13103,5 +13354,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

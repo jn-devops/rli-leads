@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LeadResource\Pages;
 use App\Filament\Resources\LeadResource\RelationManagers;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Tables\Actions\Action;
 use Homeful\KwYCCheck\Models\Lead;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -12,11 +13,15 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\ImageEntry;
+use LBHurtado\SMS\Facades\SMS;
+use Filament\Forms\Components\RichEditor;
+use Illuminate\Database\Eloquent\Collection;
 
 class LeadResource extends Resource
 {
@@ -47,7 +52,13 @@ class LeadResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                // Tables\Actions\EditAction::make(),
+                Action::make('send')
+                    ->form([
+                        TextInput::make('message')->required(),
+                    ])
+                    ->action(function (Model $record, array $data) {
+                        SMS::channel('engagespark')->from('TXTCMDR')->to($record->mobile)->content($data['message'])->send();
+                    })
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
