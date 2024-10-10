@@ -22,18 +22,22 @@ class UpdateMedia
      * Handle the event.
      */
     public function handle(LeadProcessed $event): void
-    {
+    {   
+        $imageKit = new Imagekit;
         if ($lead = $event->lead) {
-            Imagekit::uploadFilev2([
+            $response = $imageKit->uploadFilev2([
                 'imageUrl' => $lead->id_image_url,
                 'folderPath' => '/test',
                 'fileName' => $lead->code . '-idImage'
             ]);
-            Imagekit::uploadFilev2([
+            $lead->idImageUrl = json_decode($response)->url;
+            $response = $imageKit->uploadFilev2([
                 'imageUrl' => $lead->selfie_image_url,
                 'folderPath' => '/test',
                 'fileName' => $lead->code . '-selfieImage'
             ]);
+            $lead->selfieImageUrl = json_decode($response)->url;
+            $lead->save();
         }
     }
 }
