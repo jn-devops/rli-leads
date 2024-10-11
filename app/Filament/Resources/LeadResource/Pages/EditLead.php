@@ -16,4 +16,5 @@ class EditLead extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
 }

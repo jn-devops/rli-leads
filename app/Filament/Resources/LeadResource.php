@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LeadResource\Pages;
 use App\Filament\Resources\LeadResource\RelationManagers;
+use App\Livewire\MapComponent;
+use Carbon\Carbon;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Tables\Actions\Action;
 use Homeful\KwYCCheck\Models\Lead;
@@ -24,11 +26,11 @@ use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Infolists\Components\Section;
 use Filament\Support\Enums\FontWeight;
-use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\Layout\Stack;
+use Filament\Infolists\Components\Livewire;
 
 class LeadResource extends Resource
 {
@@ -93,7 +95,7 @@ class LeadResource extends Resource
                         ])
                         ->action(function (Collection $records, array $data) {
                             $records->each(function($record) use($data) {
-                                
+
                             });
                         })
                         ->deselectRecordsAfterCompletion()
@@ -227,6 +229,9 @@ class LeadResource extends Resource
                     ->schema([
                         TextEntry::make('location')
                                 ->columnSpan(3),
+                       Livewire::make(MapComponent::class)
+                            ->key(Carbon::now()->format('Y-m-d H:i:s'))
+                            ->columnSpanFull(),
                     ]),
             ])->columns(3);
 
