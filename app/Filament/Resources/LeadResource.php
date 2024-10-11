@@ -22,6 +22,13 @@ use Filament\Infolists\Components\ImageEntry;
 use LBHurtado\SMS\Facades\SMS;
 use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Collection;
+use Filament\Infolists\Components\Section;
+use Filament\Support\Enums\FontWeight;
+use Cheesegrits\FilamentGoogleMaps\Fields\Map;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\Layout\Stack;
 
 class LeadResource extends Resource
 {
@@ -42,10 +49,26 @@ class LeadResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
-                TextColumn::make('address'),
-                TextColumn::make('birthdate'),
-                TextColumn::make('mobile'),
+                Split::make([
+                    ImageColumn::make('selfie_image_url')
+                        ->grow(false)
+                        ->width(70)
+                        ->height(70)
+                        ->circular(),
+                    Stack::make([
+                        TextColumn::make('name')
+                            ->weight(FontWeight::Bold)
+                            ->searchable(),
+                        TextColumn::make('address')
+                            ->searchable(),
+                        TextColumn::make('birthdate')
+                            ->searchable(),
+                        TextColumn::make('mobile')
+                            ->searchable(),
+                    ]),
+                ])->from('md')
+                // TextColumn::make('name'),
+                // TextColumn::make('mobile'),
             ])
             ->filters([
                 //
@@ -63,6 +86,17 @@ class LeadResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    BulkAction::make('sms')
+                        ->label('Send SMS')
+                        ->form([
+                            TextInput::make('message')->required(),
+                        ])
+                        ->action(function (Collection $records, array $data) {
+                            $records->each(function($record) use($data) {
+                                
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion()
                 ]),
             ]);
     }
@@ -78,7 +112,7 @@ class LeadResource extends Resource
     {
         return [
             'index' => Pages\ListLeads::route('/'),
-            'create' => Pages\CreateLead::route('/create'),
+            // 'create' => Pages\CreateLead::route('/create'),
             'view' => Pages\ViewLead::route('/{record}'),
             'edit' => Pages\EditLead::route('/{record}/edit'),
         ];
@@ -87,21 +121,114 @@ class LeadResource extends Resource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
+            ->inlineLabel(true)
             ->schema([
-                TextEntry::make('name'),
-                TextEntry::make('address'),
-                TextEntry::make('birthdate'),
-                TextEntry::make('mobile'),
-                TextEntry::make('email'),
-                TextEntry::make('location'),
-                TextEntry::make('identifier'),
-                TextEntry::make('code'),
-                TextEntry::make('choice'),
-                TextEntry::make('answer'),
-                TextEntry::make('id_type'),
-                TextEntry::make('id_number'),
-                ImageEntry::make('selfie_image_url'),
-                ImageEntry::make('id_image_url'),
-            ]);
+                Section::make('Personal Data')
+                    ->icon('heroicon-s-user-circle')
+                    ->schema([
+                        TextEntry::make('name')
+                                ->weight(FontWeight::Bold)
+                                ->columnSpan([
+                                    'sm' => 6,
+                                    'xl' => 3,
+                                    '2xl' => 3,
+                                    'default' => 6
+                                ]),
+                        TextEntry::make('birthdate')
+                                ->weight(FontWeight::Bold)
+                                ->columnSpan([
+                                    'sm' => 6,
+                                    'xl' => 3,
+                                    '2xl' => 3,
+                                    'default' => 6
+                                ]),
+                        TextEntry::make('mobile')
+                                ->weight(FontWeight::Bold)
+                                ->columnSpan([
+                                    'sm' => 6,
+                                    'xl' => 3,
+                                    '2xl' => 3,
+                                    'default' => 6
+                                ]),
+                        TextEntry::make('email')
+                                ->weight(FontWeight::Bold)
+                                ->columnSpan([
+                                    'sm' => 6,
+                                    'xl' => 3,
+                                    '2xl' => 3,
+                                    'default' => 6
+                                ]),
+                        TextEntry::make('id_type')
+                                ->label('ID Type')
+                                ->weight(FontWeight::Bold)
+                                ->columnSpan([
+                                    'sm' => 6,
+                                    'xl' => 3,
+                                    '2xl' => 3,
+                                    'default' => 6
+                                ]),
+                        TextEntry::make('id_number')
+                                ->label('ID Number')
+                                ->weight(FontWeight::Bold)
+                                ->columnSpan([
+                                    'sm' => 6,
+                                    'xl' => 3,
+                                    '2xl' => 3,
+                                    'default' => 6
+                                ]),
+                        TextEntry::make('identifier')
+                                ->weight(FontWeight::Bold)
+                                ->columnSpan([
+                                    'sm' => 6,
+                                    'xl' => 3,
+                                    '2xl' => 3,
+                                    'default' => 6
+                                ]),
+                        TextEntry::make('code')
+                                ->weight(FontWeight::Bold)
+                                ->columnSpan([
+                                    'sm' => 6,
+                                    'xl' => 3,
+                                    '2xl' => 3,
+                                    'default' => 6
+                                ]),
+                        TextEntry::make('choice')
+                                ->label('Stock Keeping Unit')
+                                ->weight(FontWeight::Bold)
+                                ->columnSpan([
+                                    'sm' => 6,
+                                    'xl' => 3,
+                                    '2xl' => 3,
+                                    'default' => 6
+                                ]),
+                        TextEntry::make('address')
+                                ->weight(FontWeight::Bold)
+                                ->columnSpan(6),
+                        TextEntry::make('answer')
+                                ->weight(FontWeight::Bold)
+                                ->columnSpan(6),
+                    ])
+                    ->columns(6)
+                    ->columnSpan(2),
+                Section::make('Uploaded Images')
+                    ->inlineLabel(false)
+                    ->icon('heroicon-s-arrow-up-on-square')
+                    ->schema([
+                        ImageEntry::make('selfie_image_url')
+                            ->width(250)
+                            ->label('Selfie'),
+                        ImageEntry::make('id_image_url')
+                            ->width(250)
+                            ->label('ID'),
+                    ])
+                    ->columnSpan(1),
+                Section::make('Map')
+                    ->icon('heroicon-c-map-pin')
+                    ->schema([
+                        TextEntry::make('location')
+                                ->columnSpan(3),
+                    ]),
+            ])->columns(3);
+
     }
 }
