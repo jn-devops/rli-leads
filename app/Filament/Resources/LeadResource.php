@@ -32,12 +32,18 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Infolists\Components\Livewire;
 use App\Notifications\Adhoc;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Str;
 
 class LeadResource extends Resource
 {
     protected static ?string $model = Lead::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $recordTitleAttribute = 'meta->checkin->body->data->fieldsExtracted->fullName';
+
+    protected static int $globalSearchResultsLimit = 20;
 
     public static function form(Form $form): Form
     {
@@ -236,5 +242,23 @@ class LeadResource extends Resource
                     ]),
             ])->columns(3);
 
+    }
+
+    public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
+    {
+        return Str::title($record->name);
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'Birthdate' => $record->birthdate,
+            'Address' => $record->address
+        ];
+    }
+
+    public static function getGlobalSearchResultUrl(Model $record): string
+    {
+        return LeadResource::getUrl('view', ['record' => $record]);
     }
 }
