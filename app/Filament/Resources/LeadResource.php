@@ -31,6 +31,7 @@ use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Infolists\Components\Livewire;
+use App\Notifications\Adhoc;
 
 class LeadResource extends Resource
 {
@@ -81,8 +82,8 @@ class LeadResource extends Resource
                     ->form([
                         TextInput::make('message')->required(),
                     ])
-                    ->action(function (Model $record, array $data) {
-                        SMS::channel('engagespark')->from('TXTCMDR')->to($record->mobile)->content($data['message'])->send();
+                    ->action(function (Lead $record, array $data) {
+                        $record->notify(new Adhoc($data['message']));
                     })
             ])
             ->bulkActions([
@@ -94,8 +95,8 @@ class LeadResource extends Resource
                             TextInput::make('message')->required(),
                         ])
                         ->action(function (Collection $records, array $data) {
-                            $records->each(function($record) use($data) {
-
+                            $records->each(function(Lead $record) use($data) {
+                                $record->notify(new Adhoc($data['message']));
                             });
                         })
                         ->deselectRecordsAfterCompletion()
