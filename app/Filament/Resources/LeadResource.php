@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\ImageEntry;
 use LBHurtado\SMS\Facades\SMS;
@@ -34,6 +35,7 @@ use Filament\Infolists\Components\Livewire;
 use App\Notifications\Adhoc;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
+use App\Actions\Disburse;
 
 class LeadResource extends Resource
 {
@@ -90,6 +92,15 @@ class LeadResource extends Resource
                     ])
                     ->action(function (Lead $record, array $data) {
                         $record->notify(new Adhoc($data['message']));
+                    }),
+                Action::make('disburse')
+                    ->form([
+                        TextInput::make('amount')
+                            ->integer()
+                            ->required(),
+                    ])
+                    ->action(function (Lead $record, array $data) {
+                        Disburse::dispatch($record, $data['amount']);
                     })
             ])
             ->bulkActions([
