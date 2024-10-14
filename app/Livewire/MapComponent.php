@@ -10,7 +10,7 @@ class MapComponent extends Component
     public $latitude;
     public $longitude;
 
-    public function mount(Model $record) // Default to Manila
+    public function mount(Model $record)
     {
         $this->latitude = '14.5995';
         $this->longitude = '120.9842';

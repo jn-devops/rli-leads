@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LeadResource\Pages;
 use App\Filament\Resources\LeadResource\RelationManagers;
 use App\Livewire\MapComponent;
+use App\Livewire\MapViewer;
 use Carbon\Carbon;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Tables\Actions\Action;
@@ -245,11 +246,7 @@ class LeadResource extends Resource
                 Section::make('Map')
                     ->icon('heroicon-c-map-pin')
                     ->schema([
-                        TextEntry::make('location')
-                                ->columnSpan(3),
-                       Livewire::make(MapComponent::class)
-                            ->key(Carbon::now()->format('Y-m-d H:i:s'))
-                            ->columnSpanFull(),
+                        Livewire::make(MapViewer::class),
                     ]),
             ])->columns(3);
 
