@@ -48,6 +48,11 @@ class LeadResource extends Resource
 
     protected static int $globalSearchResultsLimit = 20;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
