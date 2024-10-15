@@ -152,7 +152,7 @@ class LeadResource extends Resource
     public static function infolist(Infolist $infolist): Infolist
     {
         $mailmerge = new \Homeful\Mailmerge\Mailmerge();
-        $filePath = '/Users/renzocarianga/PhpstormProjects/rli-leads/storage/Documents/test.docx';
+        $filePath = storage_path('Documents/test.docx');
         $converted_path =$mailmerge->generateDocument($filePath, ['buyer_name' => 'sample name'], 'test', 'public', false);
         return $infolist
             ->inlineLabel(true)
