@@ -4,20 +4,12 @@
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../mailmerge",
-            "options": {
-                "symlink": true
-            }
-        }
-    ],
+
     "require": {
         "php": "^8.2",
         "cheesegrits/filament-google-maps": "*",
         "filament/filament": "^3.2",
-        "ggvivar/mailmerge": "dev-main",
+        "ggvivar/mailmerge": "^1.0",
         "homeful/imagekit": "^1.0",
         "homeful/kwyc-check": "^1.4",
         "joaopaulolndev/filament-pdf-viewer": "^1.0",
