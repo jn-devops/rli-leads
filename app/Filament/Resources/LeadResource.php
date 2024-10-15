@@ -7,6 +7,7 @@ use App\Filament\Resources\LeadResource\RelationManagers;
 use App\Livewire\MapComponent;
 use App\Livewire\MapViewer;
 use Carbon\Carbon;
+use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Tables\Actions\Action;
 use Homeful\KwYCCheck\Models\Lead;
@@ -15,6 +16,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Homeful\Mailmerge\Mailmerge;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -23,6 +25,9 @@ use Filament\Forms\Components\TextInput;
 
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\ImageEntry;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
 use LBHurtado\SMS\Facades\SMS;
 use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Collection;
@@ -146,97 +151,109 @@ class LeadResource extends Resource
 
     public static function infolist(Infolist $infolist): Infolist
     {
+        $mailmerge = new \Homeful\Mailmerge\Mailmerge();
+        $filePath = '/Users/renzocarianga/PhpstormProjects/rli-leads/storage/Documents/test.docx';
+        $converted_path =$mailmerge->generateDocument($filePath, ['buyer_name' => 'sample name'], 'test', 'public', false);
         return $infolist
             ->inlineLabel(true)
             ->schema([
-                Section::make('Personal Data')
-                    ->icon('heroicon-s-user-circle')
+                Group::make()
                     ->schema([
-                        TextEntry::make('name')
-                                ->weight(FontWeight::Bold)
-                                ->columnSpan([
-                                    'sm' => 6,
-                                    'xl' => 3,
-                                    '2xl' => 3,
-                                    'default' => 6
-                                ]),
-                        TextEntry::make('birthdate')
-                                ->weight(FontWeight::Bold)
-                                ->columnSpan([
-                                    'sm' => 6,
-                                    'xl' => 3,
-                                    '2xl' => 3,
-                                    'default' => 6
-                                ]),
-                        TextEntry::make('mobile')
-                                ->weight(FontWeight::Bold)
-                                ->columnSpan([
-                                    'sm' => 6,
-                                    'xl' => 3,
-                                    '2xl' => 3,
-                                    'default' => 6
-                                ]),
-                        TextEntry::make('email')
-                                ->weight(FontWeight::Bold)
-                                ->columnSpan([
-                                    'sm' => 6,
-                                    'xl' => 3,
-                                    '2xl' => 3,
-                                    'default' => 6
-                                ]),
-                        TextEntry::make('id_type')
-                                ->label('ID Type')
-                                ->weight(FontWeight::Bold)
-                                ->columnSpan([
-                                    'sm' => 6,
-                                    'xl' => 3,
-                                    '2xl' => 3,
-                                    'default' => 6
-                                ]),
-                        TextEntry::make('id_number')
-                                ->label('ID Number')
-                                ->weight(FontWeight::Bold)
-                                ->columnSpan([
-                                    'sm' => 6,
-                                    'xl' => 3,
-                                    '2xl' => 3,
-                                    'default' => 6
-                                ]),
-                        TextEntry::make('identifier')
-                                ->weight(FontWeight::Bold)
-                                ->columnSpan([
-                                    'sm' => 6,
-                                    'xl' => 3,
-                                    '2xl' => 3,
-                                    'default' => 6
-                                ]),
-                        TextEntry::make('code')
-                                ->weight(FontWeight::Bold)
-                                ->columnSpan([
-                                    'sm' => 6,
-                                    'xl' => 3,
-                                    '2xl' => 3,
-                                    'default' => 6
-                                ]),
-                        TextEntry::make('choice')
-                                ->label('Stock Keeping Unit')
-                                ->weight(FontWeight::Bold)
-                                ->columnSpan([
-                                    'sm' => 6,
-                                    'xl' => 3,
-                                    '2xl' => 3,
-                                    'default' => 6
-                                ]),
-                        TextEntry::make('address')
-                                ->weight(FontWeight::Bold)
-                                ->columnSpan(6),
-                        TextEntry::make('answer')
-                                ->weight(FontWeight::Bold)
-                                ->columnSpan(6),
-                    ])
-                    ->columns(6)
-                    ->columnSpan(2),
-                Section::make('Uploaded Images')
+                        Section::make('Personal Data')
+                            ->icon('heroicon-s-user-circle')
+                            ->schema([
+                                TextEntry::make('name')
+                                    ->weight(FontWeight::Bold)
+                                    ->columnSpan([
+                                        'sm' => 6,
+                                        'xl' => 3,
+                                        '2xl' => 3,
+                                        'default' => 6
+                                    ]),
+                                TextEntry::make('birthdate')
+                                    ->weight(FontWeight::Bold)
+                                    ->columnSpan([
+                                        'sm' => 6,
+                                        'xl' => 3,
+                                        '2xl' => 3,
+                                        'default' => 6
+                                    ]),
+                                TextEntry::make('mobile')
+                                    ->weight(FontWeight::Bold)
+                                    ->columnSpan([
+                                        'sm' => 6,
+                                        'xl' => 3,
+                                        '2xl' => 3,
+                                        'default' => 6
+                                    ]),
+                                TextEntry::make('email')
+                                    ->weight(FontWeight::Bold)
+                                    ->columnSpan([
+                                        'sm' => 6,
+                                        'xl' => 3,
+                                        '2xl' => 3,
+                                        'default' => 6
+                                    ]),
+                                TextEntry::make('id_type')
+                                    ->label('ID Type')
+                                    ->weight(FontWeight::Bold)
+                                    ->columnSpan([
+                                        'sm' => 6,
+                                        'xl' => 3,
+                                        '2xl' => 3,
+                                        'default' => 6
+                                    ]),
+                                TextEntry::make('id_number')
+                                    ->label('ID Number')
+                                    ->weight(FontWeight::Bold)
+                                    ->columnSpan([
+                                        'sm' => 6,
+                                        'xl' => 3,
+                                        '2xl' => 3,
+                                        'default' => 6
+                                    ]),
+                                TextEntry::make('identifier')
+                                    ->weight(FontWeight::Bold)
+                                    ->columnSpan([
+                                        'sm' => 6,
+                                        'xl' => 3,
+                                        '2xl' => 3,
+                                        'default' => 6
+                                    ]),
+                                TextEntry::make('code')
+                                    ->weight(FontWeight::Bold)
+                                    ->columnSpan([
+                                        'sm' => 6,
+                                        'xl' => 3,
+                                        '2xl' => 3,
+                                        'default' => 6
+                                    ]),
+                                TextEntry::make('choice')
+                                    ->label('Stock Keeping Unit')
+                                    ->weight(FontWeight::Bold)
+                                    ->columnSpan([
+                                        'sm' => 6,
+                                        'xl' => 3,
+                                        '2xl' => 3,
+                                        'default' => 6
+                                    ]),
+                                TextEntry::make('address')
+                                    ->weight(FontWeight::Bold)
+                                    ->columnSpan(6),
+                                TextEntry::make('answer')
+                                    ->weight(FontWeight::Bold)
+                                    ->columnSpan(6),
+                            ])
+                            ->columns(6)
+                            ->columnSpanFull(),
+                        Section::make('Map')
+                            ->icon('heroicon-c-map-pin')
+                            ->schema([
+                                Livewire::make(MapViewer::class),
+                            ])->columnSpanFull(),
+                    ])->columnSpan(2),
+
+                Section::make('Uploaded Images and Documents')
                     ->inlineLabel(false)
                     ->icon('heroicon-s-arrow-up-on-square')
                     ->schema([
@@ -246,13 +263,14 @@ class LeadResource extends Resource
                         ImageEntry::make('id_image_url')
                             ->width(250)
                             ->label('ID'),
+                        PdfViewerEntry::make('file')
+                            ->label('View the PDF')
+                            ->minHeight('40svh')
+                            ->fileUrl('/mailmerge/converted_pdf/test.pdf')
+                            ->columnSpanFull()
                     ])
                     ->columnSpan(1),
-                Section::make('Map')
-                    ->icon('heroicon-c-map-pin')
-                    ->schema([
-                        Livewire::make(MapViewer::class),
-                    ]),
+
             ])->columns(3);
 
     }
