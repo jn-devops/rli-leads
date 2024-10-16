@@ -53,6 +53,7 @@ class LeadResource extends Resource
 
     protected static int $globalSearchResultsLimit = 20;
 
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
@@ -259,9 +260,11 @@ class LeadResource extends Resource
                     ->schema([
                         ImageEntry::make('selfie_image_url')
                             ->width(250)
+                            ->visibility('private')
                             ->label('Selfie'),
                         ImageEntry::make('id_image_url')
                             ->width(250)
+                            ->visibility('private')
                             ->label('ID'),
                         PdfViewerEntry::make('file')
                             ->label('View the PDF')

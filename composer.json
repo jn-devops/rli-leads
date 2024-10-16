@@ -7,6 +7,7 @@
 
     "require": {
         "php": "^8.2",
+        "aymanalhattami/filament-context-menu": "^1.0",
         "cheesegrits/filament-google-maps": "*",
         "filament/filament": "^3.2",
         "ggvivar/mailmerge": "^1.0",
