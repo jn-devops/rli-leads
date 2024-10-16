@@ -42,6 +42,7 @@ use App\Notifications\Adhoc;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
 use App\Actions\Disburse;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class LeadResource extends Resource
 {
@@ -84,9 +85,11 @@ class LeadResource extends Resource
                         TextColumn::make('address')
                             ->searchable(),
                         TextColumn::make('birthdate')
+                            ->formatStateUsing(fn (string $state): string => str_replace('ago', 'old', Carbon::parse($state)->diffForHumans()))
                             ->searchable(),
                         TextColumn::make('mobile')
-                            ->searchable(),
+                            ->formatStateUsing(fn (string $state): string => preg_replace('/(.*) (.*) (.*)/', '($1) $2-$3', phone($state, 'PH', 2)))
+                            ->searchable()
                     ]),
                 ])->from('md')
                 // TextColumn::make('name'),
