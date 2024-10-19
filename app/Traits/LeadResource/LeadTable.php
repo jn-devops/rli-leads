@@ -15,12 +15,20 @@ use Filament\Tables\Table;
 use App\Actions\Disburse;
 use App\Models\Lead;
 use Carbon\Carbon;
+use Filament\Tables\Grouping\Group;
+use Illuminate\Database\Eloquent\Builder;
 
 trait LeadTable
 {
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultGroup(
+                Group::make('meta->checkin->body->campaign->name')
+                    ->label('Campaign')
+                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->campaign))
+                    ->collapsible()
+            )
             ->columns([
                 Split::make([
                     ImageColumn::make('selfie_image_url')
@@ -31,18 +39,28 @@ trait LeadTable
                     Stack::make([
                         TextColumn::make('name')
                             ->weight(FontWeight::Bold)
-                            ->searchable(),
+                            ->searchable(
+                                // TODO: Search Query 
+                                // query: function (Builder $query, string $search): Builder {
+                                //     return $query->whereRaw("JSON_UNQUOTE(JSON_EXTRACT(meta, '$.checkin.body.data.application.modules.module_id.apiResponse.result.details.fieldsExtracted.fullName')) LIKE ?", ["%{$search}%"]);
+                                // }
+                            ),
                         TextColumn::make('address')
-                            ->searchable(),
+                            ->searchable(
+                                // TODO: Search Query
+                            ),
                         TextColumn::make('birthdate')
                             ->formatStateUsing(fn (string $state): string => str_replace('ago', 'old', Carbon::parse($state)->diffForHumans()))
-                            ->searchable(),
+                            ->searchable(
+                                // TODO: Search Query
+                            ),
                         TextColumn::make('mobile')
                             ->formatStateUsing(fn (string $state): string => preg_replace('/(.*) (.*) (.*)/', '($1) $2-$3', phone($state, 'PH', 2)))
-                            ->searchable()
+                            ->searchable(
+                                // TODO: Search Query
+                            )
                     ]),
-                ])->from('md')
-                // TextColumn::make('name'),
+                ])->from('md'),
                 // TextColumn::make('mobile'),
             ])
             ->filters([
