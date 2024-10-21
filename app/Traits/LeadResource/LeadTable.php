@@ -40,24 +40,24 @@ trait LeadTable
                         TextColumn::make('name')
                             ->weight(FontWeight::Bold)
                             ->searchable(
-                                // TODO: Search Query 
-                                // query: function (Builder $query, string $search): Builder {
-                                //     return $query->whereRaw("JSON_UNQUOTE(JSON_EXTRACT(meta, '$.checkin.body.data.application.modules.module_id.apiResponse.result.details.fieldsExtracted.fullName')) LIKE ?", ["%{$search}%"]);
-                                // }
+                                query: function (Builder $query, string $search): Builder {
+                                    return $query->whereRaw("JSON_EXTRACT(meta, '$.checkin.body.data.fieldsExtracted.fullName') LIKE ?", ["%{$search}%"]);
+                                }
                             ),
                         TextColumn::make('address')
                             ->searchable(
-                                // TODO: Search Query
+                                query: function (Builder $query, string $search): Builder {
+                                    return $query->whereRaw("JSON_EXTRACT(meta, '$.checkin.body.data.fieldsExtracted.address') LIKE ?", ["%{$search}%"]);
+                                }
                             ),
                         TextColumn::make('birthdate')
-                            ->formatStateUsing(fn (string $state): string => str_replace('ago', 'old', Carbon::parse($state)->diffForHumans()))
-                            ->searchable(
-                                // TODO: Search Query
-                            ),
+                            ->formatStateUsing(fn (string $state): string => str_replace('ago', 'old', Carbon::parse($state)->diffForHumans())),
                         TextColumn::make('mobile')
                             ->formatStateUsing(fn (string $state): string => preg_replace('/(.*) (.*) (.*)/', '($1) $2-$3', phone($state, 'PH', 2)))
                             ->searchable(
-                                // TODO: Search Query
+                                query: function (Builder $query, string $search): Builder {
+                                    return $query->whereRaw("JSON_EXTRACT(meta, '$.checkin.body.inputs.mobile') LIKE ?", ["%{$search}%"]);
+                                }
                             )
                     ]),
                 ])->from('md'),
