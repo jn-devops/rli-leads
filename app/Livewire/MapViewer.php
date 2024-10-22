@@ -33,7 +33,7 @@ class MapViewer extends Component implements HasForms
         return $form
             ->schema([
                 Map::make('location')
-                    ->label('Via Lat Lang')
+                    ->label('Checkin Coordinates')
                     ->mapControls([
                         'mapTypeControl'    => true,
                         'scaleControl'      => true,
@@ -46,7 +46,7 @@ class MapViewer extends Component implements HasForms
                     ->defaultZoom(12)
                     ->defaultLocation([$this->lat,$this->lng]) ,
                 Map::make('location2')
-                    ->label('Via Address')
+                    ->label('ID Address')
                     ->mapControls([
                         'mapTypeControl'    => true,
                         'scaleControl'      => true,

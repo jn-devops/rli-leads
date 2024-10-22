@@ -2,7 +2,7 @@
 
 namespace App\Traits\LeadResource;
 
-use Filament\Infolists\Components\{Group, ImageEntry, Livewire, Section, TextEntry};
+use Filament\Infolists\Components\{Actions\Action, Group, ImageEntry, Livewire, Section, TextEntry};
 use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
 use Filament\Support\Enums\FontWeight;
 use Filament\Infolists\Infolist;
@@ -129,6 +129,12 @@ trait LeadInfoList
                         PdfViewerEntry::make('file')
                             ->label('View the PDF')
                             ->minHeight('40svh')
+                            ->hintAction(
+                                Action::make('view_document')
+                                    ->label('Open in New Tab')
+                                    ->url('/mailmerge/converted_pdf/test.pdf')
+                                    ->openUrlInNewTab()
+                            )
                             ->fileUrl('/mailmerge/converted_pdf/test.pdf')
                             ->columnSpanFull()
                     ])
