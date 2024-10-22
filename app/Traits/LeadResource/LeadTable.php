@@ -31,6 +31,23 @@ trait LeadTable
                     ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->campaign))
                     ->collapsible()
             )
+            ->groups([
+                Group::make('created_at')
+                    ->label('Date')
+                    ->date(),
+                Group::make('meta->checkin->body->campaign->name')
+                    ->label('Campaign')
+                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->campaign))
+                    ->collapsible(),
+                Group::make('meta->checkin->body->campaign->agent->name')
+                    ->label('Agent')
+                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->agent))
+                    ->collapsible(),
+                Group::make('meta->checkin->body->campaign->organization->name')
+                    ->label('Organization')
+                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->organization))
+                    ->collapsible(),
+            ])
             ->columns([
                 Split::make([
                     ImageColumn::make('selfie_image_url')
