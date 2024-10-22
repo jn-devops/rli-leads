@@ -82,19 +82,19 @@ trait LeadTable
                 // TextColumn::make('mobile'),
             ])
             ->filters([
-                Filter::make('organization')
-                    ->form([
-                        Select::make('organization')
-                            ->options(function(){
-                                return Lead::select('meta->checkin->body->campaign->organization->name as organization_name')
-                                        ->get()
-                                        ->pluck('organization_name', 'organization_name')
-                                        ->toArray();
-                            })
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query->whereRaw("JSON_EXTRACT(meta, '$.checkin.body.campaign.organization.name') LIKE ?", ["%{$data['organization']}%"]);
-                    })
+//                Filter::make('organization')
+//                    ->form([
+//                        Select::make('organization')
+//                            ->options(function(){
+//                                return Lead::select('meta->checkin->body->campaign->organization->name as organization_name')
+//                                        ->get()
+//                                        ->pluck('organization_name', 'organization_name')
+//                                        ->toArray();
+//                            })
+//                    ])
+//                    ->query(function (Builder $query, array $data): Builder {
+//                        return $query->whereRaw("JSON_EXTRACT(meta, '$.checkin.body.campaign.organization.name') LIKE ?", ["%{$data['organization']}%"]);
+//                    })
             ])
             ->actions([
                 ViewAction::make(),
