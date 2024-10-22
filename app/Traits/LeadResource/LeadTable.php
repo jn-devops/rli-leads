@@ -25,12 +25,7 @@ trait LeadTable
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultGroup(
-                Group::make('meta->checkin->body->campaign->name')
-                    ->label('Campaign')
-                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->campaign))
-                    ->collapsible()
-            )
+            ->defaultGroup('Campaign')
             ->groups([
                 Group::make('created_at')
                     ->label('Date')
@@ -38,14 +33,18 @@ trait LeadTable
                 Group::make('meta->checkin->body->campaign->name')
                     ->label('Campaign')
                     ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->campaign))
+                    ->getKeyFromRecordUsing(fn (Lead $record): string => $record->campaign)
+                    ->collapsible(),
+
+                Group::make('meta->checkin->body->campaign->organization->name')
+                    ->label('Organization')
+                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->organization))
+                    ->getKeyFromRecordUsing(fn (Lead $record): string => $record->organization)
                     ->collapsible(),
                 Group::make('meta->checkin->body->campaign->agent->name')
                     ->label('Agent')
                     ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->agent))
-                    ->collapsible(),
-                Group::make('meta->checkin->body->campaign->organization->name')
-                    ->label('Organization')
-                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->organization))
+                    ->getKeyFromRecordUsing(fn (Lead $record): string => $record->agent)
                     ->collapsible(),
             ])
             ->columns([
