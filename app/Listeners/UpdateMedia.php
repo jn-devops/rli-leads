@@ -25,20 +25,23 @@ class UpdateMedia implements ShouldQueue
         $lead = $event->lead;
         if ($lead instanceof Lead) {
             $folderPath = $this->getFolderPath($lead);
-
             $response = $this->imageKit->uploadFilev2([
                 'imageUrl' => $lead->id_image_url,
                 'folderPath' => $folderPath,
                 'fileName' => $lead->code . '-idImage'
             ]);
-            $lead->id_image_url = json_decode($response)->url;
+            if ($response->isOk()){
+                $lead->id_image_url = json_decode($response)->url;
+            }
 
             $response = $this->imageKit->uploadFilev2([
                 'imageUrl' => $lead->selfie_image_url,
                 'folderPath' => $folderPath,
                 'fileName' => $lead->code . '-selfieImage'
             ]);
-            $lead->selfie_image_url = json_decode($response)->url;
+            if ($response->isOk()){
+                $lead->selfie_image_url = json_decode($response)->url;
+            }
 
             $lead->save();
         }
@@ -54,6 +57,7 @@ class UpdateMedia implements ShouldQueue
         $organization = Arr::get($lead->checkin, 'body.campaign.organization.name');
         $campaign = Arr::get($lead->checkin, 'body.campaign.name');
 
-        return __(':root_folder/:organization/:campaign', compact('root_folder', 'organization', $campaign));
+//        return __(':root_folder/:organization/:campaign', compact('root_folder', 'organization', $campaign));
+        return __(':root_folder/:organization/:campaign', compact('root_folder', 'organization', 'campaign'));
     }
 }
