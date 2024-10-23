@@ -46,6 +46,7 @@ class UpdateModels implements ShouldQueue
                     $contact->agent()->associate($agent);
                     $contact->lead()->associate($lead);
                     $contact->campaigns()->attach($campaign);
+                    $contact->campaign_id=$campaign->id;
                     $contact->save();
                 }
             }catch (Exception $e){
