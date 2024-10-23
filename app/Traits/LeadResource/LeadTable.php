@@ -25,28 +25,29 @@ trait LeadTable
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultGroup('Campaign')
-            ->groups([
-                Group::make('created_at')
-                    ->label('Date')
-                    ->date(),
-                Group::make('meta->checkin->body->campaign->name')
-                    ->label('Campaign')
-                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->campaign))
-                    ->getKeyFromRecordUsing(fn (Lead $record): string => $record->campaign)
-                    ->collapsible(),
-
-                Group::make('meta->checkin->body->campaign->organization->name')
-                    ->label('Organization')
-                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->organization))
-                    ->getKeyFromRecordUsing(fn (Lead $record): string => $record->organization)
-                    ->collapsible(),
-                Group::make('meta->checkin->body->campaign->agent->name')
-                    ->label('Agent')
-                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->agent))
-                    ->getKeyFromRecordUsing(fn (Lead $record): string => $record->agent)
-                    ->collapsible(),
-            ])
+//            ->defaultGroup('Campaign')
+//            ->groups([
+//                Group::make('created_at')
+//                    ->label('Date')
+//                    ->date(),
+//                Group::make('meta->checkin->body->campaign->name')
+//                    ->label('Campaign')
+//                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->campaign))
+//                    ->getKeyFromRecordUsing(fn (Lead $record): string => $record->campaign)
+//                    ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('meta->checkin->body->campaign->name',$direction))
+//                    ->collapsible(),
+//
+//                Group::make('meta->checkin->body->campaign->organization->name')
+//                    ->label('Organization')
+//                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->organization))
+//                    ->getKeyFromRecordUsing(fn (Lead $record): string => $record->organization)
+//                    ->collapsible(),
+//                Group::make('meta->checkin->body->campaign->agent->name')
+//                    ->label('Agent')
+//                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->agent))
+//                    ->getKeyFromRecordUsing(fn (Lead $record): string => $record->agent)
+//                    ->collapsible(),
+//            ])
             ->columns([
                 Split::make([
                     ImageColumn::make('selfie_image_url')
@@ -93,7 +94,8 @@ trait LeadTable
 //                            })
 //                    ])
 //                    ->query(function (Builder $query, array $data): Builder {
-//                        return $query->whereRaw("JSON_EXTRACT(meta, '$.checkin.body.campaign.organization.name') LIKE ?", ["%{$data['organization']}%"]);
+////                        return $query->whereRaw("JSON_EXTRACT(meta, '$.checkin.body.campaign.organization.name') LIKE ?", ["%{$data['organization']}%"]);
+////                        return $query->where;
 //                    })
             ])
             ->actions([
