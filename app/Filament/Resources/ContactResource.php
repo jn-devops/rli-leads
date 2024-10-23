@@ -31,6 +31,8 @@ class ContactResource extends Resource
 
 	protected static ?string $navigationLabel='Leads';
 
+	protected static ?string $label='Leads';
+
     protected static int $globalSearchResultsLimit = 20;
 
     public static function getNavigationBadge(): ?string
