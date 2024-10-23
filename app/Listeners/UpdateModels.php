@@ -35,6 +35,13 @@ class UpdateModels implements ShouldQueue
                 $campaign->leads()->attach($lead);
                 $campaign->save();
             }
+            $contact = app(Contact::class)->create(['name' => $lead->name]);
+            if ($contact instanceof  Contact) {
+                $contact->organization()->associate($organization);
+                $contact->agent()->associate($agent);
+                $contact->lead()->associate($lead);
+                $contact->save();
+            }
         }
     }
 }

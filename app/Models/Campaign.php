@@ -41,7 +41,6 @@ class Campaign extends Model
     }
 
     /**
-     * @deprecated
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function contacts()

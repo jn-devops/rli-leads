@@ -9,13 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 use Homeful\Common\Traits\HasMeta;
 
 /**
- * @deprecated
  * Class Contact
  *
  * @property int $id
  * @property string $name
  * @property SchemalessAttributes $meta
  * @property Collection $campaigns
+ * @property Organization $organization
+ * @property Agent $agent
+ * @property Lead $lead
  *
  * @method int getKey()
  */
@@ -28,6 +30,21 @@ class Contact extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+
+    public function agent()
+    {
+        return $this->belongsTo(Agent::class);
+    }
+
+    public function lead()
+    {
+        return $this->belongsTo(Lead::class);
+    }
 
     public function campaigns()
     {

@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
+use App\Models\{Agent, Campaign, Contact, Lead, Organization};
 use Spatie\SchemalessAttributes\SchemalessAttributes;
-use App\Models\{Campaign, Contact};
+use Homeful\KwYCCheck\Models\Lead as BaseLead;
 
 uses(RefreshDatabase::class, WithFaker::class);
 
@@ -11,6 +12,44 @@ test('agent has attributes', function () {
         expect($contact->id)->toBeInt();
         expect($contact->name)->toBeString();
         expect($contact->meta)->toBeInstanceOf(SchemalessAttributes::class);
+    }
+});
+
+test('contact has an agent', function () {
+    if ($contact = Contact::factory()->forAgent()->create()) {
+        if ($contact instanceof Contact) {
+            expect($contact->agent)->toBeInstanceOf(Agent::class);
+        }
+    }
+    $contact = Contact::factory()->create();
+    $agent = Agent::factory()->create();
+    if ($contact instanceof Contact and $agent instanceof Agent) {
+        $contact->agent()->associate($agent);
+        expect($contact->agent)->toBeInstanceOf(Agent::class);
+    }
+});
+
+test('contact has an organization', function () {
+    if ($contact = Contact::factory()->forOrganization()->create()) {
+        if ($contact instanceof Contact) {
+            expect($contact->organization)->toBeInstanceOf(Organization::class);
+        }
+    }
+    $contact = Contact::factory()->create();
+    $organization = Organization::factory()->create();
+    if ($contact instanceof Contact and $organization instanceof Organization) {
+        $contact->organization()->associate($organization);
+        expect($contact->organization)->toBeInstanceOf(Organization::class);
+    }
+});
+
+test('contact belongs to a lead', function () {
+    if ($contact = Contact::factory()->create()) {
+        if ($contact instanceof Contact) {
+            $lead = Lead::from(BaseLead::factory()->create());
+            $contact->lead()->associate($lead);
+            expect($contact->lead)->toBeInstanceOf(Lead::class);
+        }
     }
 });
 
