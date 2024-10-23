@@ -28,17 +28,16 @@ class UpdateMedia implements ShouldQueue
             $folderPath = $this->getFolderPath($lead);
             $response = $this->imageKit->uploadFilev2([
                 'imageUrl' => $lead->id_image_url,
-                'folderPath' => $folderPath,
+                'folderPath' => '/test',
                 'fileName' => $lead->code . '-idImage'
             ]);
 
             if ($response->isOk()){
                 $lead->id_image_url = json_decode($response)->url;
             }
-
             $response = $this->imageKit->uploadFilev2([
                 'imageUrl' => $lead->selfie_image_url,
-                'folderPath' => $folderPath,
+                'folderPath' => '/test',
                 'fileName' => $lead->code . '-selfieImage'
             ]);
             if ($response->isOk()){
