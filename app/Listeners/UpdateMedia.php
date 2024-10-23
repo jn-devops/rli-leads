@@ -32,17 +32,13 @@ class UpdateMedia implements ShouldQueue
                 'fileName' => $lead->code . '-idImage'
             ]);
 
-            if ($response->isOk()){
                 $lead->id_image_url = json_decode($response)->url;
-            }
             $response = $this->imageKit->uploadFilev2([
                 'imageUrl' => $lead->selfie_image_url,
                 'folderPath' => '/test',
                 'fileName' => $lead->code . '-selfieImage'
             ]);
-            if ($response->isOk()){
                 $lead->selfie_image_url = json_decode($response)->url;
-            }
 
             $lead->save();
         }

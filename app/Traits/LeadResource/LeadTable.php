@@ -33,8 +33,11 @@ trait LeadTable
                     ->date(),
                 Group::make('campaigns.name')
                     ->label('Campaign')
-                    ->getTitleFromRecordUsing(fn (Contact $record): string => ucfirst(Campaign::find($record->campaign_id)->name))
-                    ->getKeyFromRecordUsing(fn (Contact $record): string => Campaign::find($record->campaign_id)->name)
+                    ->getTitleFromRecordUsing(function (Contact $record): string {
+                        dd($record,$record->campaigns());
+                        return ucfirst(Campaign::find($record->campaign_id)->name);
+                    })
+                    ->getKeyFromRecordUsing(fn (Contact $record): string => $record->campaign_id)
                     ->collapsible(),
 
                 Group::make('organization.name')
