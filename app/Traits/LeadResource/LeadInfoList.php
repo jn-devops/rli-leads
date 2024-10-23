@@ -140,10 +140,10 @@ trait LeadInfoList
                             ->hintAction(
                                 Action::make('view_document')
                                     ->label('Open in New Tab')
-                                    ->url(config('app.url').'/mailmerge/converted_pdf/test.pdf')
+                                    ->url(config('app.url').'/storage/mailmerge/converted_pdf/test.pdf')
                                     ->openUrlInNewTab()
                             )
-                            ->fileUrl(config('app.url').'/mailmerge/converted_pdf/test.pdf')
+                            ->fileUrl(config('app.url').'/storage/mailmerge/converted_pdf/test.pdf')
                             ->columnSpanFull()
                     ])
                     ->columnSpan(1),
