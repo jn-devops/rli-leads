@@ -13,6 +13,7 @@
         "ggvivar/mailmerge": "^1.0",
         "homeful/imagekit": "^1.0",
         "homeful/kwyc-check": "^1.4",
+        "jn-devops/common": "^1.1",
         "joaopaulolndev/filament-pdf-viewer": "^1.0",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
