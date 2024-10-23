@@ -25,26 +25,29 @@ class UpdateModels implements ShouldQueue
      */
     public function handle(LeadProcessed $event): void
     {
-        $lead = $event->lead;
+
+        $lead = Lead::from($event->lead) ;
         if ($lead instanceof Lead) {
             try {
-                $organization = app(Organization::class)->create(['name' => $lead->organization]);
-                $agent = app(Agent::class)->create(['name' => $lead->agent]);
-                $campaign = app(Campaign::class)->create(['name' => $lead->campaign]);
+                $organization = app(Organization::class)->firstOrCreate(['name' => $lead->organization]);
+                $agent = app(Agent::class)->firstOrCreate(['name' => $lead->agent]);
+                $campaign = app(Campaign::class)->firstOrCreate(['name' => $lead->campaign]);
+
                 if ($campaign instanceof Campaign) {
                     $campaign->organization()->associate($organization);
                     $campaign->agent()->associate($agent);
                     $campaign->leads()->attach($lead);
                     $campaign->save();
                 }
-                $contact = app(Contact::class)->create(['name' => $lead->name]);
+                $contact = app(Contact::class)->firstOrCreate(['name' => $lead->name]);
+
                 if ($contact instanceof  Contact) {
                     $contact->organization()->associate($organization);
                     $contact->agent()->associate($agent);
                     $contact->lead()->associate($lead);
+                    $contact->campaigns()->attach($campaign);
                     $contact->save();
                 }
-                dd($contact);
             }catch (Exception $e){
                 dd($e);
             }

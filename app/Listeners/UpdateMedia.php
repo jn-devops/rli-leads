@@ -24,12 +24,14 @@ class UpdateMedia implements ShouldQueue
     {
         $lead = $event->lead;
         if ($lead instanceof Lead) {
+
             $folderPath = $this->getFolderPath($lead);
             $response = $this->imageKit->uploadFilev2([
                 'imageUrl' => $lead->id_image_url,
                 'folderPath' => $folderPath,
                 'fileName' => $lead->code . '-idImage'
             ]);
+
             if ($response->isOk()){
                 $lead->id_image_url = json_decode($response)->url;
             }
@@ -45,6 +47,7 @@ class UpdateMedia implements ShouldQueue
 
             $lead->save();
         }
+
     }
 
     /**

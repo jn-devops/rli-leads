@@ -2,6 +2,8 @@
 
 namespace App\Traits\LeadResource;
 
+use App\Models\Campaign;
+use App\Models\Contact;
 use Filament\Tables\Actions\{BulkActionGroup, DeleteBulkAction};
 use Filament\Tables\Columns\{ImageColumn, TextColumn};
 use Filament\Tables\Actions\{BulkAction, ViewAction};
@@ -25,53 +27,51 @@ trait LeadTable
     public static function table(Table $table): Table
     {
         return $table
-//            ->defaultGroup('Campaign')
-//            ->groups([
-//                Group::make('created_at')
-//                    ->label('Date')
-//                    ->date(),
-//                Group::make('meta->checkin->body->campaign->name')
-//                    ->label('Campaign')
-//                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->campaign))
-//                    ->getKeyFromRecordUsing(fn (Lead $record): string => $record->campaign)
-//                    ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('meta->checkin->body->campaign->name',$direction))
-//                    ->collapsible(),
-//
-//                Group::make('meta->checkin->body->campaign->organization->name')
-//                    ->label('Organization')
-//                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->organization))
-//                    ->getKeyFromRecordUsing(fn (Lead $record): string => $record->organization)
-//                    ->collapsible(),
-//                Group::make('meta->checkin->body->campaign->agent->name')
-//                    ->label('Agent')
-//                    ->getTitleFromRecordUsing(fn (Lead $record): string => ucfirst($record->agent))
-//                    ->getKeyFromRecordUsing(fn (Lead $record): string => $record->agent)
-//                    ->collapsible(),
-//            ])
+            ->groups([
+                Group::make('created_at')
+                    ->label('Date')
+                    ->date(),
+                Group::make('campaigns.name')
+                    ->label('Campaign')
+                    ->getTitleFromRecordUsing(fn (Contact $record): string => ucfirst(Campaign::find($record->campaign_id)->name))
+                    ->getKeyFromRecordUsing(fn (Contact $record): string => Campaign::find($record->campaign_id)->name)
+                    ->collapsible(),
+
+                Group::make('organization.name')
+                    ->label('Organization')
+                    ->getTitleFromRecordUsing(fn (Contact $record): string => ucfirst($record->organization->name))
+                    ->getKeyFromRecordUsing(fn (Contact $record): string => $record->organization->name)
+                    ->collapsible(),
+                Group::make('agent.name')
+                    ->label('Agent')
+                    ->getTitleFromRecordUsing(fn (Contact $record): string => ucfirst($record->agent->name))
+                    ->getKeyFromRecordUsing(fn (Contact $record): string => $record->agent->name)
+                    ->collapsible(),
+            ])
             ->columns([
                 Split::make([
-                    ImageColumn::make('selfie_image_url')
+                    ImageColumn::make('lead.selfie_image_url')
                         ->grow(false)
                         ->width(70)
                         ->height(70)
                         ->circular(),
                     Stack::make([
-                        TextColumn::make('name')
+                        TextColumn::make('lead.name')
                             ->weight(FontWeight::Bold)
                             ->searchable(
                                 query: function (Builder $query, string $search): Builder {
                                     return $query->whereRaw("JSON_EXTRACT(meta, '$.checkin.body.data.fieldsExtracted.fullName') LIKE ?", ["%{$search}%"]);
                                 }
                             ),
-                        TextColumn::make('address')
+                        TextColumn::make('lead.address')
                             ->searchable(
                                 query: function (Builder $query, string $search): Builder {
                                     return $query->whereRaw("JSON_EXTRACT(meta, '$.checkin.body.data.fieldsExtracted.address') LIKE ?", ["%{$search}%"]);
                                 }
                             ),
-                        TextColumn::make('birthdate')
+                        TextColumn::make('lead.birthdate')
                             ->formatStateUsing(fn (string $state): string => str_replace('ago', 'old', Carbon::parse($state)->diffForHumans())),
-                        TextColumn::make('mobile')
+                        TextColumn::make('lead.mobile')
                             ->formatStateUsing(fn (string $state): string => preg_replace('/(.*) (.*) (.*)/', '($1) $2-$3', phone($state, 'PH', 2)))
                             ->searchable(
                                 query: function (Builder $query, string $search): Builder {
@@ -104,8 +104,8 @@ trait LeadTable
                     ->form([
                         TextInput::make('message')->required(),
                     ])
-                    ->action(function (Lead $record, array $data) {
-                        $record->notify(new Adhoc($data['message']));
+                    ->action(function (Contact $record, array $data) {
+                        $record->lead->notify(new Adhoc($data['message']));
                     }),
                 Action::make('disburse')
                     ->form([
@@ -113,8 +113,8 @@ trait LeadTable
                             ->integer()
                             ->required(),
                     ])
-                    ->action(function (Lead $record, array $data) {
-                        Disburse::dispatch($record, $data['amount']);
+                    ->action(function (Contact $record, array $data) {
+                        Disburse::dispatch($record->lead, $data['amount']);
                     })
             ])
             ->bulkActions([
@@ -126,8 +126,8 @@ trait LeadTable
                             TextInput::make('message')->required(),
                         ])
                         ->action(function (Collection $records, array $data) {
-                            $records->each(function(Lead $record) use($data) {
-                                $record->notify(new Adhoc($data['message']));
+                            $records->each(function(Contact $record) use($data) {
+                                $record->lead->notify(new Adhoc($data['message']));
                             });
                         })
                         ->deselectRecordsAfterCompletion()

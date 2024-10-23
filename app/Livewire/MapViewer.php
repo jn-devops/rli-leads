@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Contact;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -16,15 +17,16 @@ class MapViewer extends Component implements HasForms
 
     public ?array $data = [];
 
-    public Lead $record;
+    public Contact $record;
     public $lat =0.0;
     public $lng = 0.0;
     public $address ='';
     public function mount(): void
     {
-        list($this->lat, $this->lng) = explode(',', trim($this->record->meta['checkin']['body']['inputs']['location'], '[]'));
-        $this->address=$this->record->meta->checkin['body']['data']['fieldsExtracted']['address'];
-        $this->form->fill($this->record->attributesToArray());
+        $lead= $this->record->lead;
+        list($this->lat, $this->lng) = explode(',', trim( $lead->meta['checkin']['body']['inputs']['location'], '[]'));
+        $this->address=  $lead->meta->checkin['body']['data']['fieldsExtracted']['address'];
+        $this->form->fill( $lead->attributesToArray());
     }
 
     public function form(Form $form): Form

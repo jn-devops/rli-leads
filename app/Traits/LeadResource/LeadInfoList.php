@@ -23,7 +23,8 @@ trait LeadInfoList
                         Section::make('Personal Data')
                             ->icon('heroicon-s-user-circle')
                             ->schema([
-                                TextEntry::make('name')
+                                TextEntry::make('lead.name')
+                                    ->label('Name')
                                     ->weight(FontWeight::Bold)
                                     ->columnSpan([
                                         'sm' => 6,
@@ -31,7 +32,8 @@ trait LeadInfoList
                                         '2xl' => 3,
                                         'default' => 6
                                     ]),
-                                TextEntry::make('birthdate')
+                                TextEntry::make('lead.birthdate')
+                                    ->label('BirthDate')
                                     ->weight(FontWeight::Bold)
                                     ->columnSpan([
                                         'sm' => 6,
@@ -39,7 +41,8 @@ trait LeadInfoList
                                         '2xl' => 3,
                                         'default' => 6
                                     ]),
-                                TextEntry::make('mobile')
+                                TextEntry::make('lead.mobile')
+                                    ->label('Mobile')
                                     ->weight(FontWeight::Bold)
                                     ->columnSpan([
                                         'sm' => 6,
@@ -47,7 +50,8 @@ trait LeadInfoList
                                         '2xl' => 3,
                                         'default' => 6
                                     ]),
-                                TextEntry::make('email')
+                                TextEntry::make('lead.email')
+                                    ->label('Email')
                                     ->weight(FontWeight::Bold)
                                     ->columnSpan([
                                         'sm' => 6,
@@ -55,7 +59,7 @@ trait LeadInfoList
                                         '2xl' => 3,
                                         'default' => 6
                                     ]),
-                                TextEntry::make('id_type')
+                                TextEntry::make('lead.id_type')
                                     ->label('ID Type')
                                     ->weight(FontWeight::Bold)
                                     ->columnSpan([
@@ -64,7 +68,7 @@ trait LeadInfoList
                                         '2xl' => 3,
                                         'default' => 6
                                     ]),
-                                TextEntry::make('id_number')
+                                TextEntry::make('lead.id_number')
                                     ->label('ID Number')
                                     ->weight(FontWeight::Bold)
                                     ->columnSpan([
@@ -73,7 +77,8 @@ trait LeadInfoList
                                         '2xl' => 3,
                                         'default' => 6
                                     ]),
-                                TextEntry::make('identifier')
+                                TextEntry::make('lead.identifier')
+                                    ->label('Identifier')
                                     ->weight(FontWeight::Bold)
                                     ->columnSpan([
                                         'sm' => 6,
@@ -81,7 +86,8 @@ trait LeadInfoList
                                         '2xl' => 3,
                                         'default' => 6
                                     ]),
-                                TextEntry::make('code')
+                                TextEntry::make('lead.code')
+                                    ->label('code')
                                     ->weight(FontWeight::Bold)
                                     ->columnSpan([
                                         'sm' => 6,
@@ -89,7 +95,7 @@ trait LeadInfoList
                                         '2xl' => 3,
                                         'default' => 6
                                     ]),
-                                TextEntry::make('choice')
+                                TextEntry::make('lead.choice')
                                     ->label('Stock Keeping Unit')
                                     ->weight(FontWeight::Bold)
                                     ->columnSpan([
@@ -98,10 +104,12 @@ trait LeadInfoList
                                         '2xl' => 3,
                                         'default' => 6
                                     ]),
-                                TextEntry::make('address')
+                                TextEntry::make('lead.address')
+                                    ->label('Address')
                                     ->weight(FontWeight::Bold)
                                     ->columnSpan(6),
-                                TextEntry::make('answer')
+                                TextEntry::make('lead.answer')
+                                    ->label('Answer')
                                     ->weight(FontWeight::Bold)
                                     ->columnSpan(6),
                             ])
@@ -118,11 +126,11 @@ trait LeadInfoList
                     ->inlineLabel(false)
                     ->icon('heroicon-s-arrow-up-on-square')
                     ->schema([
-                        ImageEntry::make('selfie_image_url')
+                        ImageEntry::make('lead.selfie_image_url')
                             ->width(250)
                             ->visibility('private')
                             ->label('Selfie'),
-                        ImageEntry::make('id_image_url')
+                        ImageEntry::make('lead.id_image_url')
                             ->width(250)
                             ->visibility('private')
                             ->label('ID'),

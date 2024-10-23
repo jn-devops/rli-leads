@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\LeadResource\Pages;
+namespace App\Filament\Resources\ContactResource\Pages;
 
-use App\Filament\Resources\LeadResource;
+use App\Filament\Resources\ContactResource;
 use AymanAlhattami\FilamentContextMenu\Actions\GoBackAction;
 use AymanAlhattami\FilamentContextMenu\Actions\GoForwardAction;
 use AymanAlhattami\FilamentContextMenu\Actions\RefreshAction;
 use AymanAlhattami\FilamentContextMenu\Traits\PageHasContextMenu;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
-use Illuminate\Database\Eloquent\Model;
-class ViewLead extends ViewRecord
+
+class ContactView extends ViewRecord
 {
-    protected static string $resource = LeadResource::class;
-
     use PageHasContextMenu;
-
+    protected static string $resource = ContactResource::class;
     public static function isContextMenuEnabled(): bool
     {
         return true;
@@ -30,11 +28,5 @@ class ViewLead extends ViewRecord
             GoBackAction::make(),
             GoForwardAction::make()
         ];
-    }
-    protected function mutateFormDataBeforeFill(array $data): array
-    {
-        $data['user_id'] = auth()->id();
-
-        return $data;
     }
 }

@@ -30,7 +30,17 @@ class Contact extends Model
     protected $fillable = [
         'name'
     ];
+    protected static function boot()
+    {
+        parent::boot();
 
+        static::deleting(function ($contact) {
+            // Ensure the related lead is deleted when the contact is deleted
+            if ($contact->lead) {
+                $contact->lead->delete();
+            }
+        });
+    }
     public function organization()
     {
         return $this->belongsTo(Organization::class);
